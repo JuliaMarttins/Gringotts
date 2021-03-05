@@ -2,28 +2,28 @@ const Modal ={
     open(){
         //abrir modal
         //adicionar a class active ao modal
-             document
-            .querySelector('.modal-overlay')
-            .classList
-            .add('active')
+        document
+        .querySelector('.modal-overlay')
+        .classList
+        .add('active')
     },
 
     close(){
         //fechar o modal
         //remover a class active do modal
-             document.querySelector('.modal-overlay')
-            .classList
-            .remove('active')
+        document.querySelector('.modal-overlay')
+        .classList
+        .remove('active')
     }
 }
 
 const Storage = { 
     get() {
-      return JSON.parse(localStorage.getItem("gringotts:transactions")) || []
+    return JSON.parse(localStorage.getItem("gringotts:transactions")) || []
     },
 
     set(transactions) {
-        localStorage.setItem("gringotts:transactions", JSON.stringify(transactions))
+    localStorage.setItem("gringotts:transactions", JSON.stringify(transactions))
     }
 }
 
@@ -34,7 +34,6 @@ const Transaction = {
      //variáveis são os nomes simbolicos
      //(var e let são variaveis locais, uma simples adição de valor sem o uso de let ou var se torna global.
      
-
     all: Storage.get(),
 
     add(transaction){
@@ -47,7 +46,6 @@ const Transaction = {
         Transaction.all.splice(index, 1)
 
        App.reload()
-
     },
 
     incomes() { 
@@ -62,28 +60,27 @@ const Transaction = {
      })
      
      return income;
-      
- },
+    }  ,
 
     expenses() {
 
-    let expense = 0;
+     let expense = 0;
 
-    Transaction.all.forEach(transaction => {
+     Transaction.all.forEach(transaction => {
 
         if( transaction.amount < 0 ) { //se for < que 0
             expense += transaction.amount;
         }
-    })
+     })
 
      return expense;
- },
+    },
 
  total() {
-     //entradas - saídas
-     
-     return Transaction.incomes() + Transaction.expenses();
-        }
+   //entradas - saídas
+    
+    return Transaction.incomes() + Transaction.expenses();
+  }
 }
 
 
@@ -92,7 +89,7 @@ const DOM = {
 
     // substituir os dados do HTML cm os do JS
 
-    transactionsContainer: document.querySelector('#data-table tbody'),
+    transactionsContainer: document.querySelector('#data-table #showNewTransaction'),
 
     addTransaction(transaction, index) {
            const tr = document.createElement('tr')
@@ -143,9 +140,7 @@ const Utils = {
 
     formatAmount(value){
         value = Number(value.replace(/\,\./g, "")) * 100
-        
         return value
-
     },
 
     formatDate (date) {
@@ -164,7 +159,6 @@ const Utils = {
             style: "currency",
             currency: "BRL"
         })
-  
         return signal + value
     }
 }
@@ -244,7 +238,6 @@ const App = {
         DOM.updateBalance()
         
         Storage.set(Transaction.all)
-
     },
 
     reload() {
@@ -254,3 +247,19 @@ const App = {
 }
 
 App.init()
+
+var coll = document.getElementsByClassName("collapsible");
+var i;
+
+for (i = 0; i < coll.length; i++) {
+  coll[i].addEventListener("click", function() {
+    this.classList.toggle("active");
+    var content = this.nextElementSibling;
+    if (content.style.display === "block") {
+      content.style.display = "none";
+    } else {
+      content.style.display = "block";
+    }
+  });
+}
+
